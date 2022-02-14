@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTasksTable extends Migration
+class CreateEmployeesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,18 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->dateTime('due_date');
-            $table->string('duration');
-            $table->tinyInteger('type');
+            $table->string('name');
+            $table->tinyInteger('office_id');
+            $table->string('designation');
+            $table->string('email')->unique();
+            $table->string('mobile', 12)->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->foreignId('employee_id')->constrained('employees');
 
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
+
         });
     }
 
@@ -34,6 +35,6 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_managers');
+        Schema::dropIfExists('employees');
     }
 }

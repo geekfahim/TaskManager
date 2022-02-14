@@ -21,6 +21,7 @@
             <ul class="nav me-auto">
                 <li class="nav-item"><a href="{{route('task.index')}}" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
                 <li class="nav-item"><a href="{{route('task.create')}}" class="nav-link link-dark px-2">Add Task</a></li>
+                <li class="nav-item"><a href="" class="nav-link link-dark px-2">Employee</a></li>
             </ul>
             <ul class="nav">
 {{--                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Login</a></li>--}}

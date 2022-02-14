@@ -2,7 +2,6 @@
 @section('header_title','All Task')
 @push('css')
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 @endpush
 @section('content')
     @if (isset($success))
