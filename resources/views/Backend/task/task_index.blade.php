@@ -19,6 +19,7 @@
                     <th>Due Date</th>
                     <th>Duration</th>
                     <th>Type</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -27,9 +28,24 @@
                     <tr>
                         <td>{{ $loop->iteration}}</td>
                         <td>{{ $task->title }}</td>
-                        <td>{{$task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}</td>
+                        <td>
+                            @if(\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES) === "Delayed")
+                                <span class="text-danger">{{  $task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}</span>
+                                @else
+                                <span class="">{{  $task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}
+                                @endif
+
+                            </span>
+                        </td>
                         <td>{{ $task->duration }}</td>
                         <td class="text-capitalize">{{ \App\Http\Helpers\BaseHelper::ValueOf($task->type,\App\Models\Task::TYPE) }}</td>
+                        <td>
+                            @if( \App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES) === "Delayed")
+                                <span class="badge bg-danger">{{\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES)}}</span>
+                            @else
+                                <span class="badge bg-primary">{{\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES)}}</span>
+                            @endif
+                        </td>
                         <td>
                             <form method="POST" action="{{ route('task.destroy', $task->id) }}">
                                 <a class="btn btn-sm btn-primary" href="{{route('task.edit',$task->id)}}">

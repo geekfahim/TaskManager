@@ -3,22 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\BaseHelper;
+use App\Models\Employee;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use mysql_xdevapi\Exception;
+use function PHPUnit\Framework\throwException;
 
 class TaskController extends Controller
 {
     public function index()
     {
         $data = Task::all();
-        return view('Backend.task.task_index',compact('data'));
+        return view('Backend.task.task_index', compact('data'));
     }
 
     public function create()
     {
         $types = Task::TYPE;
-        return view('Backend.task.task_create', compact('types'));
+        $employees = Employee::select(['id', 'name'])->get();
+        $statuses = Task::STATUSES;
+        return view('Backend.task.task_create', compact('types', 'employees', 'statuses'));
     }
 
     public function store(Request $request)
@@ -27,16 +32,21 @@ class TaskController extends Controller
             'title' => ['required', 'string', 'max:50'],
             'due_date' => ['required', 'date'],
             'duration' => ['required', 'string'],
-            'type' => ['required']
+            'employee' => ['required'],
+            'status' => ['required'],
+            'type' => ['required'],
         ]);
         $item = new Task();
         $item->title = $request->title;
         $item->due_date = $request->due_date;
         $item->duration = $request->duration;
-        $item->type = BaseHelper::IndexOf($request->type,Task::TYPE);
+        $item->employee_id = $request->employee;
+        $item->status = BaseHelper::IndexOf($request->status, Task::STATUSES);
+        $item->type = BaseHelper::IndexOf($request->type, Task::TYPE);
+//        dd($item);
         $item->save();
         return redirect()->route('task.index')
-            ->with('message','Task created successfully.');
+            ->with('message', 'Task created successfully.');
     }
 
     public function show(Task $task)
@@ -47,32 +57,39 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $types = Task::TYPE;
-        return view('Backend.task.task_edit',compact('task','types'));
+        $statuses = Task::STATUSES;
+        $employees = Employee::select(['id', 'name'])->get();
+        return view('Backend.task.task_edit', compact('task', 'types', 'employees', 'statuses'));
     }
+
     public function update(Request $request, Task $task)
     {
         $request->validate([
-            'title' => ['required', 'string', 'max:50',Rule::unique('tasks','title')->ignore($task->id)],
+            'title' => ['required', 'string', 'max:50', Rule::unique('tasks', 'title')->ignore($task->id)],
             'due_date' => ['required', 'date'],
             'duration' => ['required', 'string'],
-            'type' => ['required']
+            'employee' => ['required'],
+            'status' => ['required'],
+            'type' => ['required'],
         ]);
 //        dd($request->all());
 
         $task->title = $request->title;
         $task->due_date = $request->due_date;
         $task->duration = $request->duration;
-        $task->type = BaseHelper::IndexOf($request->type,Task::TYPE);
+        $task->employee_id = $request->employee;
+        $task->status = BaseHelper::IndexOf($request->status, Task::STATUSES);
+        $task->type = BaseHelper::IndexOf($request->type, Task::TYPE);
+
         $task->save();
         return redirect()->route('task.index')
-            ->with('success','Task updated successfully');
+            ->with('success', 'Task updated successfully');
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
-
         return redirect()->route('task.index')
-            ->with('success','Task deleted successfully');
+            ->with('success', 'Task deleted successfully');
     }
 }

@@ -42,6 +42,24 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <label for="assigned" class="form-label">Assigned to <span class="text-danger">*</span></label>
+                    <select id="assigned" name="employee" class="form-select">
+                        <option value="">Select One...</option>
+                        @foreach($employees as $employee)
+                            <option class="text-capitalize" value="{{$employee->id}}">{{$employee->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="assigned" class="form-label">Task Status<span class="text-danger">*</span></label>
+                    <select id="assigned" name="status" class="form-select">
+                        <option value="">Select One...</option>
+                        @foreach($statuses as $status)
+                            <option class="text-capitalize" value="{{$status}}">{{$status}}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="col-12 my-4">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>

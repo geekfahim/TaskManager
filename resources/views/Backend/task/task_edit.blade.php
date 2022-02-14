@@ -46,7 +46,28 @@
                         @endforeach
                     </select>
                 </div>
-
+                <div class="col-md-4">
+                    <label for="employee" class="form-label">Employee <span class="text-danger">*</span></label>
+                    <select id="employee" name="employee" class="form-select">
+                        <option value="">Select One...</option>
+                        @foreach($employees as $employee)
+                            <option
+                                value="{{$employee->id}}" {{$employee->id===$task->employee_id?'selected':''}} >{{$employee->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputState" class="form-label">Status <span class="text-danger">*</span></label>
+                    <select id="inputState" name="status" class="form-select">
+                        <option value="">Select One...</option>
+                        @foreach($statuses as $status)
+                            <option
+                                value="{{$status}}" {{\App\Http\Helpers\BaseHelper::IndexOf($status,\App\Models\Task::STATUSES)===$task->status? 'selected' : ''}}>
+                                {{$status}}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="col-md-4  my-4">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -60,7 +81,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         flatpickr("#due_date", {enableTime: true, dateFormat: "Y-m-d H:i",});
-        flatpickr("#duration",{
+        flatpickr("#duration", {
             enableTime: true,
             noCalendar: true,
             dateFormat: "H:i",
