@@ -38,11 +38,13 @@
         </div>
     </header>
     <div class="container">
-            <div class="align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+            <div class="d-flex justify-content-between p-3 my-3 text-white bg-purple rounded shadow-sm">
                 <div class="lh-1">
-                    <h1 class="h6 mb-0 text-white lh-1">@yield('header_title')</h1>
+                    <h6 class="mb-0 text-white">@yield('header_title')</h6>
                 </div>
-                @yield('top_button')
+               <div>
+                   @yield('top_button')
+               </div>
             </div>
         @yield('content')
     </div>

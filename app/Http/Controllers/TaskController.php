@@ -15,11 +15,48 @@ class TaskController extends Controller
     public function dashboard(){
         return view('Backend.dashboard');
     }
-    public function index()
+/*    public function index(Request $request)
     {
         $data = Task::all();
         //$data = Task::select()->whereDate($request->date)->get()
         return view('Backend.task.task_index', compact('data'));
+    }*/
+
+
+    public function index(Request $request)
+    {
+//        $request->from_date="2020-02-05";
+//        $request->to_date="2022-03-05";
+        if(request()->ajax())
+        {
+            if(!empty($request->from_date))
+            {
+                $data = Task::whereBetween('due_date', array($request->from_date, $request->to_date))
+                    ->get();
+            }
+            else {
+                $data = Task::all();
+            }
+            return datatables()->of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($data) {
+/*                    $btn = "<form method='POST' action='{{ route("task.destroy", $data->id) }}'>
+                                     <a class='btn btn-sm btn-primary' href='{{route("task.edit",$data->id)}}">
+                                         <i class="fa fa-edit"></i> Edit
+                                     </a>
+                                     @csrf
+                                     <input name="_method" type="hidden" value="DELETE">
+                                     <button type="submit" class="btn btn-sm btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>
+                                         <i class="fa fa-trash"></i>
+                                         Delete</button>
+                                 </form>";
+                    return $btn;*/
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+
+        }
+        return view('Backend.task.task_index');
     }
 
     public function create()
