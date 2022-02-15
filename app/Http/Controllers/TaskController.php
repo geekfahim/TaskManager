@@ -12,47 +12,68 @@ use function PHPUnit\Framework\throwException;
 
 class TaskController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         return view('Backend.dashboard');
     }
-/*    public function index(Request $request)
-    {
-        $data = Task::all();
-        //$data = Task::select()->whereDate($request->date)->get()
-        return view('Backend.task.task_index', compact('data'));
-    }*/
+
+    /*    public function index(Request $request)
+        {
+            $data = Task::all();
+            //$data = Task::select()->whereDate($request->date)->get()
+            return view('Backend.task.task_index', compact('data'));
+        }*/
 
 
     public function index(Request $request)
     {
-//        $request->from_date="2020-02-05";
-//        $request->to_date="2022-03-05";
-        if(request()->ajax())
-        {
-            if(!empty($request->from_date))
-            {
-                $data = Task::whereBetween('due_date', array($request->from_date, $request->to_date))
+
+
+        if (request()->ajax()) {
+            if (!empty($request->from_date)) {
+                $data = Task::select('id', 'title', 'start_date', 'due_date', 'duration', 'type', 'status', 'employee_id')->whereBetween('due_date', array($request->from_date, $request->to_date))
                     ->get();
-            }
-            else {
-                $data = Task::all();
+            } else {
+                $data = Task::with('employee')->select('id', 'title', 'start_date', 'due_date', 'duration', 'type', 'status', 'employee_id')->get();
             }
             return datatables()->of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($data) {
-/*                    $btn = "<form method='POST' action='{{ route("task.destroy", $data->id) }}'>
-                                     <a class='btn btn-sm btn-primary' href='{{route("task.edit",$data->id)}}">
-                                         <i class="fa fa-edit"></i> Edit
-                                     </a>
-                                     @csrf
-                                     <input name="_method" type="hidden" value="DELETE">
-                                     <button type="submit" class="btn btn-sm btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>
-                                         <i class="fa fa-trash"></i>
-                                         Delete</button>
-                                 </form>";
-                    return $btn;*/
+                ->editColumn('start_date', function ($data) {
+                    return $data->start_date->toFormattedDateString();
                 })
-                ->rawColumns(['action'])
+                ->editColumn('due_date', function ($data) {
+                    return $data->due_date->toFormattedDateString();
+                })
+                ->editColumn('type', function ($data) {
+                    if ($data->type == 1) return '<span class="badge warning">Pending</span>';
+                    if ($data->type == 2) return 'Deadline';
+                    if ($data->type == 3) return 'Delayed';
+                    if ($data->type == 4) return 'Completed';
+                    return '';
+                })
+                ->addColumn('status', function ($data) {
+                    if ($data->status == 1) return '<span class="badge warning">Ongoing</span>';
+                    if ($data->status == 2) return '<span class="badge bg-danger">Due</span>';
+                    if ($data->status == 3) return '<span class="badge bg-danger">Delayed</span>';
+                    if ($data->status == 4) return '<span class="badge bg-primary">Completed</span>';
+                    return '';
+                })
+                ->addColumn('action', function ($data) {
+
+                    $url_edit = url('task/' . $data->id . '/edit');
+                    $url_delete = url('task/' . $data->id);
+                    $edit = '<a class = "btn btn-sm btn-primary" href = "' . $url_edit . '" title = "Edit">
+                           <i class = "fa fa-edit"></i>
+                            Edit
+                        </a>';
+                    $delete = '<form action="' . $url_delete . '" method="POST">
+                    ' . csrf_field() . '
+                    ' . method_field("DELETE") . '
+                    <button type="submit" class="btn btn-sm btn-danger show_confirm" id="">Delete</button>
+                    </form>';
+                    return $edit. $delete;
+                })
+                ->rawColumns(['action','type', 'status'])
                 ->make(true);
 
         }
@@ -71,6 +92,7 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string', 'max:50'],
+            'start_date' => ['required', 'date'],
             'due_date' => ['required', 'date'],
             'duration' => ['required', 'string'],
             'employee' => ['required'],
@@ -79,15 +101,16 @@ class TaskController extends Controller
         ]);
         $item = new Task();
         $item->title = $request->title;
+        $item->start_date = $request->start_date;
         $item->due_date = $request->due_date;
         $item->duration = $request->duration;
         $item->employee_id = $request->employee;
         $item->status = BaseHelper::IndexOf($request->status, Task::STATUSES);
         $item->type = BaseHelper::IndexOf($request->type, Task::TYPE);
-//        dd($item);
+
         $item->save();
         return redirect()->route('task.index')
-            ->with('essage', 'Task created successfully.');
+            ->with('message', 'Task created successfully.');
     }
 
     public function show(Task $task)
@@ -116,6 +139,7 @@ class TaskController extends Controller
 //        dd($request->all());
 
         $task->title = $request->title;
+        $task->start_date = $request->start_date;
         $task->due_date = $request->due_date;
         $task->duration = $request->duration;
         $task->employee_id = $request->employee;

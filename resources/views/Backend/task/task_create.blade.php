@@ -22,17 +22,23 @@
                 @csrf
                 <div class="col-md-4 ">
                     <label for="title" class="form-label">Title<span class="text-danger">*</span></label>
-                    <input type="text" name="title" class="form-control" id="title">
+                    <input type="text" name="title" class="form-control" id="title" required>
+                </div>
+                <div class="col-md-4 my-2">
+                    <label for="start_date" class="form-label">Start Date<span class="text-danger">*</span></label>
+                    <div class="input-group date" id="datetimepicker">
+                        <input type="text" name="start_date" id="start_date" class="form-control" autocomplete="off" required>
+                    </div>
                 </div>
                 <div class="col-md-4 my-2">
                     <label for="due_date" class="form-label">Due Date<span class="text-danger">*</span></label>
                     <div class="input-group date" id="datetimepicker">
-                        <input type="text" name="due_date" id="due_date" class="form-control" autocomplete="off">
+                        <input type="text" name="due_date" id="due_date" class="form-control" autocomplete="off" required>
                     </div>
                 </div>
                 <div class="col-md-4 my-2">
                     <label for="duration" class="form-label">Duration<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="duration" id="duration" placeholder="">
+                    <input type="text" class="form-control" name="duration" id="duration" placeholder="" required>
                 </div>
                 <div class="col-md-4">
                     <label for="inputState" class="form-label">Type <span class="text-danger">*</span></label>
@@ -74,6 +80,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         flatpickr("#due_date", {enableTime: true, dateFormat: "Y-m-d H:i",});
+        flatpickr("#start_date", {dateFormat: "Y-m-d H:i",});
         flatpickr("#duration",{
             enableTime: true,
             noCalendar: true,

@@ -1,8 +1,13 @@
 @extends('Backend.master')
 @section('header_title','Employee List')
+
 @push('css')
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 @endpush
+
+@section('top_button')
+    <a href="{{route('employee.create')}}" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> Add New Employee</a>
+@endsection
 @section('content')
     @if (isset($success))
         <div class="alert alert-success alert-dismissible fade show">
@@ -24,24 +29,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($data as $eployee)
+                @foreach ($data as $employee)
                     <tr>
                         <td>{{ $loop->iteration}}</td>
-                        <td>{{ $eployee->office_id }}</td>
-                        <td>{{ $eployee->name }}</td>
-                        <td>{{ $eployee->designation }}</td>
-                        <td>{{ $eployee->email }}</td>
-                        <td>{{ $eployee->mobile }}</td>
+                        <td>{{ $employee->office_id }}</td>
+                        <td>{{ $employee->name }}</td>
+                        <td>{{ $employee->designation }}</td>
+                        <td>{{ $employee->email }}</td>
+                        <td>{{ $employee->mobile }}</td>
                         <td>
-                            <form method="POST" action="{{ route('task.destroy', $eployee->id) }}">
-                                <a class="btn btn-sm btn-primary" href="">
+                            <form method="POST" action="{{ route('employee.destroy', $employee->id) }}">
+                                <a class="btn btn-sm btn-primary" href="{{route('employee.edit',$employee->id)}}">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>
                                 @csrf
                                 <input name="_method" type="hidden" value="DELETE">
                                 <button type="submit" class="btn btn-sm btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>
                                     <i class="fa fa-trash"></i>
-                                    Delete</button>
+                                    Delete
+                                </button>
                             </form>
 
                         </td>

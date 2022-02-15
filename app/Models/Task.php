@@ -13,11 +13,17 @@ class Task extends Model
     protected $fillable =['title','due_date','duration','type'];
 
     CONST TYPE = [1=>'call',2=>'deadline',3=>'email',4=>'meeting'];
-    CONST STATUSES = [1=>'Pending',2=>'Due',3=>'Delayed',4=>'Completed'];
+    CONST STATUSES = [1=>'Ongoing',2=>'Due',3=>'Delayed',4=>'Completed'];
 
     protected $casts = [
+        'start_date' => 'datetime:Y-m-d',
         'due_date' => 'datetime:Y-m-d',
         'type' => 'integer'
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 
 }

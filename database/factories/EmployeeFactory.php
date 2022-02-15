@@ -16,10 +16,10 @@ class EmployeeFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'office_id' => $this->faker->randomDigitNotNull(5),
+            'office_id' => $this->faker->numerify('3###'),
             'designation'=>$this->faker->jobTitle(),
             'email' => $this->faker->unique()->safeEmail(),
-            'mobile' => $this->faker->numerify('17########'),
+            'mobile' => $this->faker->numerify('017########'),
             'status' => $this->faker->numberBetween(1,3),
         ];
     }

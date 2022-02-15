@@ -36,55 +36,17 @@
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>Title</th>
+                    <th>Name</th>
+                    <th>Employee</th>
+                    <th>Start Date</th>
                     <th>Due Date</th>
                     <th>Duration</th>
                     <th>Type</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th style="width: 80px;">Action</th>
                 </tr>
                 </thead>
 
-                {{--     <tbody>
-                     @foreach ($data as $task)
-                         <tr>
-                             <td>{{ $loop->iteration}}</td>
-                             <td>{{ $task->title }}</td>
-                             <td>
-                                 @if(\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES) === "Delayed")
-                                     <span class="text-danger">{{  $task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}</span>
-                                     @else
-                                     <span class="">{{  $task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}
-                                     @endif
-
-                                 </span>
-                             </td>
-                             <td>{{ $task->duration }}</td>
-                             <td class="text-capitalize">{{ \App\Http\Helpers\BaseHelper::ValueOf($task->type,\App\Models\Task::TYPE) }}</td>
-                             <td>
-                                 @if( \App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES) === "Delayed")
-                                     <span class="badge bg-danger">{{\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES)}}</span>
-                                 @else
-                                     <span class="badge bg-primary">{{\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES)}}</span>
-                                 @endif
-                             </td>
-                             <td>
-                                 <form method="POST" action="{{ route('task.destroy', $task->id) }}">
-                                     <a class="btn btn-sm btn-primary" href="{{route('task.edit',$task->id)}}">
-                                         <i class="fa fa-edit"></i> Edit
-                                     </a>
-                                     @csrf
-                                     <input name="_method" type="hidden" value="DELETE">
-                                     <button type="submit" class="btn btn-sm btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>
-                                         <i class="fa fa-trash"></i>
-                                         Delete</button>
-                                 </form>
-
-                             </td>
-                         </tr>
-                     @endforeach
-                     </tbody>
-                     --}}
 
             </table>
         </div>
@@ -122,6 +84,14 @@
                     {
                         data: 'title',
                         name: 'title'
+                    },
+                    {
+                        data: 'employee.name',
+                        name: 'employee.name'
+                    },
+                    {
+                        data: 'start_date',
+                        name: 'start_date'
                     },
                     {
                         data: 'due_date',
@@ -164,8 +134,7 @@
             $('#taskTable').DataTable().destroy();
             getData();
         });
-
-        $('.show_confirm').click(function (event) {
+        $("#taskTable").on("click", ".show_confirm", function () {
             var form = $(this).closest("form");
             event.preventDefault();
             swal({

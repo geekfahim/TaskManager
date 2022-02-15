@@ -60,8 +60,7 @@
 .bg-purple { background-color: #6f42c1; }
 
 footer{
-    position: absolute;
+    position: relative;
     bottom: 0;
-    top: auto;
     width: 100% !important;
 }
