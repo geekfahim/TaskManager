@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('Backend.dashboard');
-});
+Route::get('/',[TaskController::class,'dashboard'])->name('dashboard');
 Route::resource('task', TaskController::class);
-
+//
+Route::resource('employee', EmployeeController::class);

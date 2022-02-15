@@ -19,9 +19,9 @@
     <nav class="py-2 bg-light border-bottom">
         <div class="container d-flex flex-wrap">
             <ul class="nav me-auto">
-                <li class="nav-item"><a href="{{route('task.index')}}" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
-                <li class="nav-item"><a href="{{route('task.create')}}" class="nav-link link-dark px-2">Add Task</a></li>
-                <li class="nav-item"><a href="" class="nav-link link-dark px-2">Employee</a></li>
+                <li class="nav-item"><a href="{{route('dashboard')}}" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
+                <li class="nav-item"><a href="{{route('task.index')}}" class="nav-link link-dark px-2">Task</a></li>
+                <li class="nav-item"><a href="{{route('employee.index')}}" class="nav-link link-dark px-2">Employee</a></li>
             </ul>
             <ul class="nav">
 {{--                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Login</a></li>--}}
@@ -42,6 +42,7 @@
                 <div class="lh-1">
                     <h1 class="h6 mb-0 text-white lh-1">@yield('header_title')</h1>
                 </div>
+                @yield('top_button')
             </div>
         @yield('content')
     </div>
@@ -50,11 +51,11 @@
 
 </main>
 
-<footer class="footer py-3 bg-light">
+<!-- <footer class="footer py-3 bg-light">
     <div class="container">
         <span class="text-muted">Copright &copy; 2022 Developed by Jahir Chowdhury</span>
     </div>
-</footer>
+</footer> -->
 
 <script crossorigin="anonymous"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

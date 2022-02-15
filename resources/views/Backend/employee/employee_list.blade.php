@@ -1,5 +1,5 @@
 @extends('Backend.master')
-@section('header_title','All Task')
+@section('header_title','Employee List')
 @push('css')
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 @endpush
@@ -11,45 +11,30 @@
     @endif
     <div class="card pa-4">
         <div class="card-body">
-            <a href="{{route('task.create')}}"> <button type="button" class="btn btn-outline-primary"><i class="fa fa-plus"></i>Add New Task</button></a>
             <table id="dataTable" class="table table-sm my-4">
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>Title</th>
-                    <th>Due Date</th>
-                    <th>Duration</th>
-                    <th>Type</th>
-                    <th>Status</th>
+                    <th>Office_Id</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Email</th>
+                    <th>Phone</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($data as $task)
+                @foreach ($data as $eployee)
                     <tr>
                         <td>{{ $loop->iteration}}</td>
-                        <td>{{ $task->title }}</td>
+                        <td>{{ $eployee->office_id }}</td>
+                        <td>{{ $eployee->name }}</td>
+                        <td>{{ $eployee->designation }}</td>
+                        <td>{{ $eployee->email }}</td>
+                        <td>{{ $eployee->mobile }}</td>
                         <td>
-                            @if(\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES) === "Delayed")
-                                <span class="text-danger">{{  $task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}</span>
-                                @else
-                                <span class="">{{  $task->due_date->isoFormat('MMMM Do YYYY, h:mm:ss a')}}
-                                @endif
-
-                            </span>
-                        </td>
-                        <td>{{ $task->duration }}</td>
-                        <td class="text-capitalize">{{ \App\Http\Helpers\BaseHelper::ValueOf($task->type,\App\Models\Task::TYPE) }}</td>
-                        <td>
-                            @if( \App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES) === "Delayed")
-                                <span class="badge bg-danger">{{\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES)}}</span>
-                            @else
-                                <span class="badge bg-primary">{{\App\Http\Helpers\BaseHelper::ValueOf($task->status,\App\Models\Task::STATUSES)}}</span>
-                            @endif
-                        </td>
-                        <td>
-                            <form method="POST" action="{{ route('task.destroy', $task->id) }}">
-                                <a class="btn btn-sm btn-primary" href="{{route('task.edit',$task->id)}}">
+                            <form method="POST" action="{{ route('task.destroy', $eployee->id) }}">
+                                <a class="btn btn-sm btn-primary" href="">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>
                                 @csrf

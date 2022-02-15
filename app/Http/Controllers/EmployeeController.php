@@ -14,7 +14,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $data = Employee::all();
+        return view('Backend.employee.employee_list', compact('data'));
     }
 
     /**

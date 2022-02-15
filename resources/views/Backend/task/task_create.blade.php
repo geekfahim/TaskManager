@@ -3,6 +3,7 @@
 @push('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
+
 @section('content')
     <div class="card">
         <div class="card-body">

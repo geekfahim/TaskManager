@@ -12,9 +12,13 @@ use function PHPUnit\Framework\throwException;
 
 class TaskController extends Controller
 {
+    public function dashboard(){
+        return view('Backend.dashboard');
+    }
     public function index()
     {
         $data = Task::all();
+        //$data = Task::select()->whereDate($request->date)->get()
         return view('Backend.task.task_index', compact('data'));
     }
 
@@ -46,7 +50,7 @@ class TaskController extends Controller
 //        dd($item);
         $item->save();
         return redirect()->route('task.index')
-            ->with('message', 'Task created successfully.');
+            ->with('essage', 'Task created successfully.');
     }
 
     public function show(Task $task)
